@@ -78,6 +78,76 @@ async function processDeposit(invoice, amount, userId, source) {
 }
 
 // ============================================================
+// AUTO-EXPIRE & AUTO-DELETE NOMOR VIRTUAL
+// Begitu masa sewa (expires_at) lewat, order tidak lagi muncul
+// sebagai "Kadaluarsa" — order langsung di-refund (jika belum)
+// lalu diarsipkan ke koleksi log dan dihapus dari otp_orders,
+// sehingga otomatis hilang dari semua daftar yang dilihat user.
+// ============================================================
+const EXPIRED_LOG_COLLECTION = 'otp_orders_expired_log';
+
+async function expireSingleOrder(db, order) {
+  // Lock atomik supaya order yang sama tidak diproses dua kali oleh request paralel (lazy check + cron bisa jalan bersamaan)
+  const lock = await db.collection('otp_orders').findOneAndUpdate(
+    { _id: order._id, status: { $in: ['ACTIVE', 'OTP_RECEIVED'] } },
+    { $set: { status: 'EXPIRED', updated_at: new Date() } }
+  );
+  if (!lock) return null;
+
+  let newBalance;
+  let refunded = order.refund_status === 'refunded';
+  if (order.refund_status === 'none') {
+    const refundLock = await db.collection('otp_orders').findOneAndUpdate(
+      { _id: order._id, refund_status: 'none' }, { $set: { refund_status: 'refunded' } }
+    );
+    if (refundLock) {
+      const updatedUser = await db.collection('users').findOneAndUpdate(
+        { _id: order.user_id }, { $inc: { balance: order.price, total_refund: order.price } }, { returnDocument: 'after' }
+      );
+      newBalance = updatedUser?.balance;
+      refunded = true;
+    }
+  }
+
+  try {
+    await db.collection(EXPIRED_LOG_COLLECTION).insertOne({
+      original_id: order._id, user_id: order.user_id, provider_order_id: order.provider_order_id,
+      service_name: order.service_name, country: order.country, phone_number: order.phone_number,
+      base_price: order.base_price, price: order.price, status: 'EXPIRED', refund_status: 'refunded',
+      created_at: order.created_at, archived_at: new Date(),
+    });
+  } catch (e) { log.error('archive expired order', e.message); }
+
+  await db.collection('otp_orders').deleteOne({ _id: order._id });
+  await auditLog(db, order.user_id, 'order_auto_expired_deleted', { order_id: order._id, price: order.price }, null);
+
+  return { refunded, new_balance: newBalance };
+}
+
+// Lazy cleanup — dipanggil sebelum endpoint manapun menampilkan daftar order milik satu user,
+// supaya nomor yang masa aktifnya sudah lewat langsung lenyap real-time saat user membuka dashboard/riwayat.
+async function expireUserOrders(db, userId) {
+  const due = await db.collection('otp_orders').find({
+    user_id: userId, status: { $in: ['ACTIVE', 'OTP_RECEIVED'] }, expires_at: { $lte: new Date() },
+  }).toArray();
+  for (const o of due) { await expireSingleOrder(db, o).catch(e => log.error('expireUserOrders', e.message)); }
+}
+
+// Cleanup global — dipakai oleh endpoint cron, memproses SEMUA user sekaligus
+// supaya penghapusan tetap berjalan walau tidak ada user yang sedang online.
+async function expireAllOrdersGlobal(db, batchSize = 300) {
+  const due = await db.collection('otp_orders').find({
+    status: { $in: ['ACTIVE', 'OTP_RECEIVED'] }, expires_at: { $lte: new Date() },
+  }).limit(batchSize).toArray();
+  let expired = 0;
+  for (const o of due) {
+    const r = await expireSingleOrder(db, o).catch(e => { log.error('expireAllOrdersGlobal', e.message); return null; });
+    if (r) expired++;
+  }
+  return { scanned: due.length, expired };
+}
+
+// ============================================================
 // STATIC PAGES
 // ============================================================
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../public/login.html')));
@@ -233,6 +303,7 @@ app.get('/api/dashboard', authMiddleware, async (req, res) => {
   try {
     const db = req.db;
     const u = req.user;
+    await expireUserOrders(db, u._id);
     const recentOrders = await db.collection('otp_orders').find({ user_id: u._id }).sort({ created_at: -1 }).limit(5).toArray();
     const recentDeposits = await db.collection('deposits').find({ user_id: u._id }).sort({ created_at: -1 }).limit(5).toArray();
     res.json({
@@ -372,12 +443,24 @@ app.get('/api/order/:id/status', authMiddleware, async (req, res) => {
     const { id } = req.params;
     if (!ObjectId.isValid(id)) return res.status(400).json({ success: false, error: 'ID tidak valid.' });
     const order = await db.collection('otp_orders').findOne({ _id: new ObjectId(id), user_id: req.user._id });
-    if (!order) return res.status(404).json({ success: false, error: 'Order tidak ditemukan.' });
+    if (!order) return res.json({ success: true, deleted: true });
+
+    // Aturan utama: begitu waktu sewa lewat, order langsung dihapus — tidak pernah ditampilkan sebagai "Kadaluarsa".
+    if (order.expires_at && new Date(order.expires_at) <= new Date() && ['ACTIVE', 'OTP_RECEIVED'].includes(order.status)) {
+      const ex = await expireSingleOrder(db, order);
+      return res.json({ success: true, deleted: true, refunded: !!ex?.refunded, new_balance: ex?.new_balance });
+    }
 
     if (['ACTIVE', 'OTP_RECEIVED'].includes(order.status)) {
       try {
         const r = await smscode.getOrder(order.provider_order_id);
         const d = r.data;
+
+        if (d.status === 'EXPIRED') {
+          const ex = await expireSingleOrder(db, order);
+          return res.json({ success: true, deleted: true, refunded: !!ex?.refunded, new_balance: ex?.new_balance });
+        }
+
         const updates = { updated_at: new Date() };
         if (d.status !== order.status) updates.status = d.status;
         if (d.otp_code && !order.otp_code) { updates.otp_code = d.otp_code; updates.otp_received_at = new Date(); }
@@ -387,7 +470,7 @@ app.get('/api/order/:id/status', authMiddleware, async (req, res) => {
           Object.assign(order, updates);
         }
 
-        if (['EXPIRED', 'CANCELED', 'FAILED'].includes(d.status) && order.refund_status === 'none') {
+        if (['CANCELED', 'FAILED'].includes(d.status) && order.refund_status === 'none') {
           const refundLock = await db.collection('otp_orders').findOneAndUpdate(
             { _id: order._id, refund_status: 'none' }, { $set: { refund_status: 'refunded' } }
           );
@@ -468,6 +551,7 @@ app.post('/api/order/resend', authMiddleware, async (req, res) => {
 app.get('/api/history/orders', authMiddleware, async (req, res) => {
   try {
     const db = req.db;
+    await expireUserOrders(db, req.user._id);
     const page = Math.max(1, parseInt(req.query.page) || 1);
     const limit = Math.min(50, parseInt(req.query.limit) || 20);
     const filter = { user_id: req.user._id };
@@ -784,6 +868,23 @@ app.post('/api/admin/settings', authMiddleware, adminMiddleware, async (req, res
 app.get('/api/admin/provider-balance', authMiddleware, adminMiddleware, async (req, res) => {
   try { const r = await smscode.getBalance(); res.json({ success: true, balance: r.data }); }
   catch (e) { res.status(502).json({ success: false, error: 'Gagal mengambil saldo provider.' }); }
+});
+
+// ============================================================
+// CRON — pembersihan nomor virtual kadaluarsa secara global
+// Lindungi dengan header x-cron-secret / ?secret= yang harus sama dengan env CRON_SECRET.
+// Dipanggil otomatis oleh Vercel Cron (vercel.json) dan/atau scheduler eksternal.
+// ============================================================
+app.all('/api/cron/expire-orders', async (req, res) => {
+  try {
+    const secret = req.headers['x-cron-secret'] || req.query.secret || (req.headers['authorization'] || '').replace('Bearer ', '');
+    if (!config.security.cronSecret || secret !== config.security.cronSecret) {
+      return res.status(401).json({ success: false, error: 'Unauthorized.' });
+    }
+    const db = await getDb();
+    const result = await expireAllOrdersGlobal(db);
+    res.json({ success: true, ...result });
+  } catch (e) { log.error('cron expire-orders', e.message); res.status(500).json({ success: false, error: 'Gagal menjalankan cleanup.' }); }
 });
 
 // ============================================================
