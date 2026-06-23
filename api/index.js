@@ -28,6 +28,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// static assets (css/js) — halaman HTML tetap di-serve manual via res.sendFile di bawah
+app.use(express.static(path.join(__dirname, '../public'), { index: false }));
+
 // best-effort in-memory rate limit (per warm instance)
 const rateStore = new Map();
 app.use('/api/', (req, res, next) => {
