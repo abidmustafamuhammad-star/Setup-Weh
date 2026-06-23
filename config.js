@@ -34,6 +34,7 @@ secureCookie: process.env.VERCEL === '1' || process.env.NODE_ENV === 'production
     rateLimitWindow: 60 * 1000,
     rateLimitMax: 150,
     adminSetupKey: process.env.ADMIN_SETUP_KEY || '',
+    cronSecret: process.env.CRON_SECRET || '',
   },
   app: {
     appName: process.env.APP_NAME || 'ReceOTP',
