@@ -1,0 +1,138 @@
+/* ============================================================
+   ReceOTP — Shared Theme Layer
+   Berisi: font premium, variabel mode terang, animasi/transisi,
+   tombol toggle tema, dan polesan visual lain yang dipakai bersama
+   oleh main.html, admin.html, dan login.html.
+   Aturan di sini SENGAJA ditulis dengan selector beratribut
+   ([data-theme="light"] ...) supaya specificity-nya selalu lebih
+   tinggi dari CSS asli di masing-masing halaman — jadi file ini
+   bisa override tanpa perlu mengubah urutan <link>/<style>.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --font:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+
+/* ------------------------------------------------------------
+   LIGHT THEME — override semua variabel warna
+   ------------------------------------------------------------ */
+:root[data-theme="light"]{
+  --bg:#f5f5f8;--surf:#ffffff;--card:#ffffff;--card2:#fbfbfd;
+  --border:#e9e9ef;--border2:#dcdce6;--border3:#c7c7d4;
+  --text:#17171d;--muted:#6b6b78;--dim:#9999a6;--label:#52525e;
+
+  --red:#e53e3e;--red2:#c53030;--red3:#c53030;
+  --red-dim:#fdecec;--red-dim2:#fbd6d6;
+
+  --success:#2f855a;--warn:#b7791f;--info:#2b6cb0;--purple:#6b46c1;
+  --success-text:#276749;--info-text:#2b6cb0;--warn-text:#975a16;--purple-text:#6b46c1;
+
+  --surf2:#f1f1f6;--surf3:#e9e9f0;--chip-bg:#edeef2;
+  --ok-dim:#e7f8ee;--ok-dim2:#d4f1e0;
+  --info-dim:#e8f1fb;--warn-dim:#fdf3da;--purple-dim:#f1eafb;
+
+  --neon-red:0 0 8px #e53e3e2a,0 0 16px #e53e3e1a;
+  --neon-sm:0 0 4px #e53e3e2a;
+  --neon-glow:0 0 4px #e53e3e3a;
+
+  color-scheme:light;
+}
+
+/* halaman login punya nama variabel sedikit berbeda (tidak ada --surf/--card2/--border3) — aman, aturan di atas cukup mencakup semuanya */
+
+/* ------------------------------------------------------------
+   Override class spesifik yang masih literal (bukan via var)
+   ------------------------------------------------------------ */
+[data-theme="light"] ::-webkit-scrollbar-thumb{background:var(--border3)}
+
+[data-theme="light"] .modal{box-shadow:0 24px 60px rgba(20,20,30,.10)}
+[data-theme="light"] .toast{box-shadow:0 8px 28px rgba(20,20,30,.10)}
+[data-theme="light"] .sidebar.open{box-shadow:4px 0 24px rgba(20,20,30,.14)}
+[data-theme="light"] .card{box-shadow:0 24px 60px rgba(20,20,30,.08),inset 0 1px 0 #ffffffcc}
+
+[data-theme="light"] .alert-error{background:#fdecec;color:#c53030}
+[data-theme="light"] .alert-success{background:#e9f7ef;color:#276749}
+
+[data-theme="light"] .bg-grid{
+  background-image:linear-gradient(#0000000a 1px,transparent 1px),linear-gradient(90deg,#0000000a 1px,transparent 1px);
+}
+[data-theme="light"] .bg-glow{background:radial-gradient(circle,#e53e3e0d 0%,transparent 70%)}
+[data-theme="light"] .bg-glow2{background:radial-gradient(circle,#c530300d 0%,transparent 70%)}
+
+[data-theme="light"] .qr-render,[data-theme="light"] #qr-render{background:#fff}
+
+/* kartu/elemen yang sebelumnya hanya pakai border, dikasih shadow tipis biar berasa "premium" */
+.scard,.sc,.prod-card,.ord-card,.srv-card,.toast,.pstat{box-shadow:0 1px 3px rgba(0,0,0,.22)}
+[data-theme="light"] .scard,[data-theme="light"] .sc,[data-theme="light"] .prod-card,
+[data-theme="light"] .ord-card,[data-theme="light"] .srv-card,[data-theme="light"] .pstat{
+  box-shadow:0 1px 3px rgba(20,20,30,.05),0 1px 1px rgba(20,20,30,.04);
+}
+
+/* ------------------------------------------------------------
+   TOPBAR — efek kaca buram (frosted glass), aman kalau browser
+   tak mendukung color-mix/backdrop-filter (fallback ke solid)
+   ------------------------------------------------------------ */
+@supports (backdrop-filter: blur(1px)){
+  .topbar{backdrop-filter:blur(10px) saturate(1.1);background:color-mix(in srgb, var(--surf) 86%, transparent)}
+}
+
+/* ------------------------------------------------------------
+   TRANSISI HALUS saat ganti tema
+   ------------------------------------------------------------ */
+body,.sidebar,.topbar,.app,.card,.modal,.toast,.bg-grid,.bg-glow,.bg-glow2{
+  transition:background-color .35s ease, color .35s ease, border-color .35s ease, box-shadow .35s ease;
+}
+
+/* ------------------------------------------------------------
+   ANIMASI ENTRANCE — halaman & kartu muncul dengan fade+slide halus
+   ------------------------------------------------------------ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.page.active{animation:fadeUp .4s cubic-bezier(.16,1,.3,1)}
+.scard{animation:fadeUp .42s cubic-bezier(.16,1,.3,1) backwards}
+.sc{animation:fadeUp .4s cubic-bezier(.16,1,.3,1) backwards}
+.sc:nth-of-type(1){animation-delay:.02s}
+.sc:nth-of-type(2){animation-delay:.07s}
+.sc:nth-of-type(3){animation-delay:.12s}
+.sc:nth-of-type(4){animation-delay:.17s}
+.prod-card,.ord-card,.srv-card{animation:fadeIn .3s ease}
+
+/* tombol berasa "ditekan" saat diklik */
+.btn:active,.tab:active,.amt-chip:active,.mni:active,.ni:active{transform:scale(.96)}
+.btn{will-change:transform}
+
+/* fokus keyboard lebih jelas & rapi, baik utk aksesibilitas */
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,.ni:focus-visible,.mni:focus-visible{
+  outline:2px solid var(--red);outline-offset:2px;border-radius:6px;
+}
+
+/* hormati orang yang mematikan animasi di OS-nya */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+
+/* ------------------------------------------------------------
+   TOMBOL TOGGLE TEMA
+   ------------------------------------------------------------ */
+.theme-toggle{
+  display:flex;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:9px;flex-shrink:0;
+  border:1px solid var(--border2);background:var(--surf2);
+  color:var(--muted);cursor:pointer;transition:all .2s;
+}
+.theme-toggle:hover{border-color:var(--red);color:var(--red3);transform:translateY(-1px)}
+.theme-toggle:active{transform:scale(.92)}
+.theme-toggle svg{width:16px;height:16px;flex-shrink:0}
+.theme-toggle .icon-moon{display:none}
+[data-theme="light"] .theme-toggle .icon-sun{display:none}
+[data-theme="light"] .theme-toggle .icon-moon{display:flex}
+
+/* posisi khusus di halaman login (tidak ada sidebar/topbar di sana) */
+.theme-toggle.floating{position:fixed;top:16px;right:16px;z-index:50;background:var(--card);box-shadow:0 4px 16px rgba(0,0,0,.18)}
+
+@media(max-width:480px){
+  .theme-toggle.floating{top:12px;right:12px}
+}
