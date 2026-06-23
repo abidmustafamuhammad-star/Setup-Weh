@@ -139,6 +139,14 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .finp:focus,.fsel:focus{border-color:var(--red)}
 .finp::placeholder{color:var(--dim)}
 .fsel option{background:#111}
+.picker-btn{display:flex;align-items:center;justify-content:space-between;text-align:left;cursor:pointer;color:var(--text)}
+.picker-btn:disabled{opacity:.5;cursor:not-allowed}
+.picker-btn svg{color:var(--muted);flex-shrink:0}
+.picker-item{display:flex;align-items:center;gap:10px;padding:10px 8px;border-radius:8px;cursor:pointer;font-size:.85rem;color:var(--text);transition:background .15s}
+.picker-item:hover{background:#171717}
+.picker-item.sel{background:#1a0808;color:var(--red3)}
+.picker-item .pi-flag{font-size:1.1rem;width:22px;text-align:center;flex-shrink:0}
+.picker-empty{text-align:center;padding:24px;color:var(--muted);font-size:.82rem}
 
 /* LOADING / EMPTY */
 .spin{width:16px;height:16px;border:2px solid #2a2a2a;border-top-color:var(--red);border-radius:50%;animation:spin .6s linear infinite;flex-shrink:0}
@@ -297,6 +305,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   #dash-tables{grid-template-columns:1fr!important}
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 <div class="toasts" id="toasts"></div>
@@ -326,6 +335,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
     <div class="nav-sec">Akun</div>
     <div class="ni" id="nav-profile" onclick="goPage('profile')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profil
+    </div>
+    <div class="ni" id="nav-back-admin" style="display:none" onclick="window.location.href='/admin'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>Kembali ke Admin
     </div>
   </nav>
   <div class="sb-foot">
@@ -376,11 +388,17 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
           <div class="filter-row" style="margin-bottom:0">
             <div>
               <label class="flbl">Negara</label>
-              <select class="fsel" id="sel-country" onchange="onCountryChange(this.value)"><option value="">Pilih Negara...</option></select>
+              <button type="button" class="fsel picker-btn" id="pick-country" onclick="openPicker('country')">
+                <span id="pick-country-label">Pilih Negara...</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
             </div>
             <div>
               <label class="flbl">Layanan / Platform</label>
-              <select class="fsel" id="sel-service" onchange="onServiceChange(this.value)" disabled><option value="">Pilih layanan...</option></select>
+              <button type="button" class="fsel picker-btn" id="pick-service" onclick="openPicker('service')" disabled>
+                <span id="pick-service-label">Pilih layanan...</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
             </div>
           </div>
         </div>
@@ -440,6 +458,17 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   <button class="mni" id="mni-deposit" onclick="goPage('deposit')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Deposit</button>
   <button class="mni" id="mni-profile" onclick="goPage('profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profil</button>
 </div>
+</div>
+
+<!-- MODAL PICKER NEGARA / LAYANAN -->
+<div class="modal-ov" id="modal-picker">
+  <div class="modal" style="max-height:80vh;display:flex;flex-direction:column">
+    <div class="modal-head"><h3 id="picker-title">Pilih</h3><button class="modal-x" onclick="closeModal('modal-picker')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div style="padding:12px 18px 0">
+      <input type="text" class="finp" id="picker-search" placeholder="Cari..." oninput="filterPicker(this.value)" style="margin-bottom:0">
+    </div>
+    <div class="modal-body" id="picker-list" style="overflow-y:auto;flex:1;padding-top:10px"></div>
+  </div>
 </div>
 
 <!-- MODAL KONFIRMASI ORDER -->
@@ -503,8 +532,9 @@ async function api(method,url,data){
 async function init(){
   try{
     const r=await api('GET','/api/auth/me');
-    if(!r.success||r.user.role==='admin'){window.location.replace(r.success?'/admin':'/login');return;}
+    if(!r.success){window.location.replace('/login');return;}
     USER=r.user;updateUserUI();loadDashboard();initDeposit();loadCatalogCountries();
+    if(USER.role==='admin'){const el=$('nav-back-admin');if(el)el.style.display='flex';}
   }catch(e){if(!e.message.includes('Unauthorized'))window.location.replace('/login');}
 }
 function updateUserUI(){
@@ -551,28 +581,62 @@ async function loadDashboard(){
 }
 
 // ── CATALOG ORDER ──
+let selectedCountry=null, selectedService=null, pickerMode=null, pickerItems=[];
 async function loadCatalogCountries(){
   try{
     const r=await api('GET','/api/catalog/countries');
     countries=r.data||[];
-    const sel=$('sel-country');
-    sel.innerHTML='<option value="">— Pilih Negara —</option>'+countries.map(c=>`<option value="${c.id}">${c.emoji||''} ${c.name}</option>`).join('');
   }catch(e){toast('Gagal memuat negara','error')}
 }
+function openPicker(mode){
+  if(mode==='service'&&!selectedCountry)return;
+  pickerMode=mode;
+  pickerItems=mode==='country'?countries:services;
+  $('picker-title').textContent=mode==='country'?'Pilih Negara':'Pilih Layanan';
+  $('picker-search').value='';
+  renderPickerList(pickerItems);
+  openModal('modal-picker');
+  setTimeout(()=>$('picker-search').focus(),150);
+}
+function renderPickerList(items){
+  const selId=pickerMode==='country'?selectedCountry?.id:selectedService?.id;
+  if(!items.length){$('picker-list').innerHTML='<div class="picker-empty">Tidak ditemukan.</div>';return}
+  $('picker-list').innerHTML=items.map(it=>`<div class="picker-item${it.id===selId?' sel':''}" onclick="choosePickerItem(${it.id})">${pickerMode==='country'?`<span class="pi-flag">${it.emoji||'🌐'}</span>`:''}<span>${it.name}</span></div>`).join('');
+}
+function filterPicker(q){
+  q=(q||'').toLowerCase();
+  renderPickerList(pickerItems.filter(it=>it.name.toLowerCase().includes(q)));
+}
+function choosePickerItem(id){
+  const item=pickerItems.find(it=>it.id===id);
+  if(!item)return;
+  if(pickerMode==='country'){
+    selectedCountry=item;selectedService=null;
+    $('pick-country-label').textContent=`${item.emoji||''} ${item.name}`.trim();
+    $('pick-service-label').textContent='Pilih layanan...';
+    $('pick-service').disabled=true;
+    $('products-area').innerHTML='';
+    closeModal('modal-picker');
+    onCountryChange(item.id);
+  }else{
+    selectedService=item;
+    $('pick-service-label').textContent=item.name;
+    closeModal('modal-picker');
+    onServiceChange(item.id);
+  }
+}
 async function onCountryChange(cid){
-  const sel=$('sel-service');
-  sel.disabled=true;sel.innerHTML='<option value="">Memuat layanan...</option>';
+  $('pick-service').disabled=true;
   $('products-area').innerHTML='';
   if(!cid)return;
   try{
     const r=await api('GET',`/api/catalog/services?country_id=${cid}`);
     services=r.data||[];
-    sel.innerHTML='<option value="">— Pilih Layanan —</option>'+services.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
-    sel.disabled=false;
+    $('pick-service').disabled=false;
   }catch(e){toast('Gagal memuat layanan','error')}
 }
 async function onServiceChange(sid){
-  const cid=$('sel-country').value;
+  const cid=selectedCountry?.id;
   $('products-area').innerHTML=`<div class="loading-box"><div class="spin"></div>Memuat produk...</div>`;
   if(!sid||!cid)return;
   try{
@@ -581,7 +645,7 @@ async function onServiceChange(sid){
   }catch(e){$('products-area').innerHTML='<div class="empty-box"><p>Gagal memuat produk. Coba lagi.</p></div>'}
 }
 function renderProducts(prods){
-  const cName=(countries.find(c=>c.id===parseInt($('sel-country').value))||{}).name||'';
+  const cName=selectedCountry?.name||'';
   if(!prods.length){$('products-area').innerHTML=`<div class="empty-box"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="7" x2="15" y2="7"/></svg><p style="font-size:.82rem">Tidak ada produk tersedia untuk filter ini.</p></div>`;return}
   $('products-area').innerHTML=`<div style="font-size:.75rem;color:var(--muted);margin-bottom:10px;font-weight:600">${prods.length} produk tersedia</div><div class="prod-grid">${prods.map(p=>`<div class="prod-card"><div class="prod-icon" style="${svcColor(p.name)}">${svcSvg(p.name)}</div><div class="prod-name">${p.name}</div><div class="prod-meta"><span class="prod-tag">${cName}</span>${p.available?`<span class="prod-tag" style="color:#68d391">${p.available} stok</span>`:''}</div><div class="prod-foot"><div><div class="prod-price">${fmtRp(p.price)}</div><div style="font-size:.62rem;color:var(--muted)">per nomor</div></div><button class="prod-buy" onclick='openOrderModal(${JSON.stringify(JSON.stringify(p))})'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Beli</button></div></div>`).join('')}</div>`;
 }
@@ -594,7 +658,7 @@ function svcSvg(name){
 let pendingOrder=null;
 function openOrderModal(pJson){
   const p=JSON.parse(pJson);pendingOrder=p;
-  const cName=(countries.find(c=>c.id===parseInt($('sel-country').value))||{}).name||'';
+  const cName=selectedCountry?.name||'';
   $('modal-order-body').innerHTML=`<div style="display:grid;gap:10px">
     <div style="background:#0d0d0d;border-radius:8px;padding:13px;border:1px solid #1e1e1e">
       <div style="font-size:.68rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">Layanan</div>
@@ -617,11 +681,11 @@ async function confirmOrder(){
   const p=pendingOrder;
   if(USER.balance<p.price){toast('Saldo tidak cukup. Silakan deposit.','error');closeModal('modal-order');return;}
   setLoad('btn-confirm-order',true);
-  const cName=(countries.find(c=>c.id===parseInt($('sel-country').value))||{}).name||'';
+  const cName=selectedCountry?.name||'';
   try{
     const r=await api('POST','/api/order/create',{
       product_id:p.id,catalog_product_id:p.catalog_product_id,
-      country_id:$('sel-country').value,platform_id:$('sel-service').value,
+      country_id:selectedCountry?.id,platform_id:selectedService?.id,
       service_name:p.name,country_name:cName,
     });
     if(!r.success){toast(r.error||'Gagal membuat order','error');return;}
@@ -747,21 +811,35 @@ async function doDeposit(){
   if(!r.success){toast(r.error||'Gagal membuat deposit','error');return}
   toast('Deposit dibuat! Segera lakukan pembayaran.','success');
   const pay=r.payment;
+  const isQris=method==='qris';
   $('dep-status-box').innerHTML=`
     <div class="pay-box" style="margin-bottom:10px"><div class="pay-box-label">Invoice</div><div class="pay-box-val" style="font-size:.82rem">${r.invoice}</div></div>
-    ${pay.payment_number?`<div class="pay-box" style="margin-bottom:10px"><div class="pay-box-label">Nomor Pembayaran / QR</div><div class="pay-box-val">${pay.payment_number.length>50?pay.payment_number.substring(0,60)+'...':pay.payment_number}</div><button class="btn btn-sm btn-outline" style="margin-top:8px" onclick="copyText('${pay.payment_number}','Nomor pembayaran')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Salin</button></div>`:''}
+    ${isQris?`<div class="pay-box" style="margin-bottom:10px;text-align:center"><div class="pay-box-label" style="margin-bottom:8px">Scan QRIS untuk Membayar</div><div id="qr-render" style="background:#fff;display:inline-block;padding:12px;border-radius:10px"></div><div style="margin-top:8px;font-size:.78rem;color:var(--muted)">Total bayar: <b style="color:#fff">${fmtRp(pay.total_payment||r.amount)}</b></div></div>`
+      :pay.payment_number?`<div class="pay-box" style="margin-bottom:10px"><div class="pay-box-label">Nomor Virtual Account</div><div class="pay-box-val">${pay.payment_number}</div><button class="btn btn-sm btn-outline" style="margin-top:8px" onclick="copyText('${pay.payment_number}','Nomor pembayaran')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Salin</button></div>`:''}
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
       <button class="btn btn-sm btn-outline" onclick="checkDeposit('${r.invoice}',${r.amount})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Cek Status</button>
       <button class="btn btn-sm btn-danger" onclick="cancelDeposit('${r.invoice}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>Batalkan</button>
     </div>
     <div style="font-size:.75rem;color:var(--muted);margin-top:10px" id="dep-poll-msg">⏳ Menunggu pembayaran... Auto-cek tiap 5 detik.</div>`;
+  if(isQris&&pay.payment_number&&window.QRCode){
+    try{new QRCode($('qr-render'),{text:pay.payment_number,width:200,height:200,correctLevel:QRCode.CorrectLevel.M});}
+    catch(e){$('qr-render').textContent='Gagal membuat QR. Klik Cek Status atau hubungi admin.';}
+  }
+  CURRENT_DEPOSIT_INVOICE=r.invoice;
   pollDeposit(r.invoice,r.amount);
 }
+let depPollTimer=null;
+let CURRENT_DEPOSIT_INVOICE=null;
+function stopDepositPoll(){if(depPollTimer){clearInterval(depPollTimer);depPollTimer=null;}}
 function pollDeposit(invoice,amount){
-  let tries=0;const iv=setInterval(async()=>{
-    tries++;if(tries>240){clearInterval(iv);setElText('dep-poll-msg','⏰ Waktu habis. Klik Cek Status manual.');return}
+  stopDepositPoll();
+  let tries=0;depPollTimer=setInterval(async()=>{
+    tries++;if(tries>240){stopDepositPoll();setElText('dep-poll-msg','⏰ Waktu habis. Klik Cek Status manual.');return}
     try{const r=await api('GET',`/api/deposit/status/${invoice}`);
-      if(r.deposit?.status==='completed'){clearInterval(iv);toast('✅ Pembayaran berhasil! Saldo bertambah.','success',6000);setElText('dep-poll-msg','✅ Pembayaran diterima!');refreshBalance()}}catch(e){}
+      const s=r.deposit?.status;
+      if(s==='completed'){stopDepositPoll();toast('✅ Pembayaran berhasil! Saldo bertambah.','success',6000);setElText('dep-poll-msg','✅ Pembayaran diterima!');refreshBalance()}
+      else if(s==='canceled'){stopDepositPoll();setElText('dep-poll-msg','❌ Deposit dibatalkan.');}
+    }catch(e){}
   },5000);
 }
 function setElText(id,t){const el=$(id);if(el)el.textContent=t}
@@ -771,7 +849,15 @@ async function checkDeposit(invoice,amount){
 }
 async function cancelDeposit(invoice){
   if(!confirm('Batalkan deposit ini?'))return;
-  try{const r=await api('POST','/api/deposit/cancel',{invoice});if(r.success)toast('Deposit dibatalkan','success');else toast(r.error||'Gagal','error')}catch(e){toast('Error','error')}
+  try{
+    const r=await api('POST','/api/deposit/cancel',{invoice});
+    if(r.success){
+      toast('Deposit dibatalkan','success');
+      stopDepositPoll();
+      $('dep-status-box').innerHTML=`<div class="empty-box"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><p style="font-size:.82rem">Deposit dibatalkan. Buat deposit baru di sebelah kiri.</p></div>`;
+      loadHistory();
+    } else toast(r.error||'Gagal','error')
+  }catch(e){toast('Error','error')}
 }
 
 // ── PROFILE ──
