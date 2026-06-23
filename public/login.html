@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <title>ReceOTP — Login</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -14,6 +15,7 @@
   --neon-glow:0 0 4px #e53e3e88;
   --font:'Segoe UI',system-ui,sans-serif;
   --r:10px;
+  --surf2:#0d0d0d;--label:#ccc;
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font);overflow:hidden}
 body{display:flex;align-items:center;justify-content:center;min-height:100vh;position:relative}
@@ -35,14 +37,14 @@ body{display:flex;align-items:center;justify-content:center;min-height:100vh;pos
   display:flex;align-items:center;justify-content:center;
   box-shadow:var(--neon-red);}
 .logo-icon svg{width:26px;height:26px;color:#fff}
-.logo h1{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;color:#fff}
+.logo h1{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;color:var(--text)}
 .logo h1 span{color:var(--red)}
 .logo p{font-size:.82rem;color:var(--muted);margin-top:4px}
 
 .card{background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:28px;
   box-shadow:0 24px 60px #00000088,inset 0 1px 0 #ffffff08}
 
-.tabs{display:flex;background:#0d0d0d;border:1px solid var(--border);border-radius:8px;padding:3px;margin-bottom:22px;gap:3px}
+.tabs{display:flex;background:var(--surf2);border:1px solid var(--border);border-radius:8px;padding:3px;margin-bottom:22px;gap:3px}
 .tab{flex:1;padding:8px;border:none;background:none;border-radius:6px;
   font-size:.85rem;font-weight:600;cursor:pointer;color:var(--muted);transition:all .2s;font-family:var(--font)}
 .tab.active{background:var(--red);color:#fff;box-shadow:var(--neon-glow)}
@@ -55,11 +57,11 @@ body{display:flex;align-items:center;justify-content:center;min-height:100vh;pos
 .alert svg{width:15px;height:15px;flex-shrink:0}
 
 .form-group{margin-bottom:14px}
-.form-label{display:block;font-size:.75rem;font-weight:600;color:#ccc;margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
+.form-label{display:block;font-size:.75rem;font-weight:600;color:var(--label);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
 .inp-wrap{position:relative}
 .inp-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--dim);display:flex;pointer-events:none}
 .inp-icon svg{width:15px;height:15px}
-.inp{width:100%;padding:10px 11px 10px 36px;background:#0d0d0d;border:1px solid var(--border2);
+.inp{width:100%;padding:10px 11px 10px 36px;background:var(--surf2);border:1px solid var(--border2);
   border-radius:8px;color:var(--text);font-size:.875rem;font-family:var(--font);
   outline:none;transition:border-color .2s,box-shadow .2s}
 .inp:focus{border-color:var(--red);box-shadow:0 0 0 3px #e53e3e22}
@@ -100,8 +102,14 @@ body{display:flex;align-items:center;justify-content:center;min-height:100vh;pos
   .card{padding:20px 16px}
 }
 </style>
+<link rel="stylesheet" href="/css/theme.css">
+<script src="/js/theme.js" defer></script>
 </head>
 <body>
+<button class="theme-toggle floating" onclick="toggleTheme()" title="Ganti tema" aria-label="Ganti tema terang/gelap">
+  <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
 <div class="bg-grid"></div>
 <div class="bg-glow"></div>
 <div class="bg-glow2"></div>
