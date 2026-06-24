@@ -282,6 +282,17 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .pstat-lbl{font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:4px}
 .pstat-val{font-size:1.1rem;font-weight:800;color:var(--text);font-family:monospace}
 
+/* LOGOUT CARD */
+.logout-card{border:1px solid #e53e3e33;border-radius:12px;padding:18px 20px;margin-top:16px;background:linear-gradient(135deg,#1a08081a,#2d0f0f0a);display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logout-card-info{display:flex;align-items:center;gap:12px}
+.logout-card-icon{width:40px;height:40px;border-radius:10px;background:var(--red-dim);border:1px solid #e53e3e33;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logout-card-icon svg{width:18px;height:18px;color:var(--red3)}
+.logout-card-title{font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:2px}
+.logout-card-sub{font-size:.72rem;color:var(--muted)}
+.btn-logout-full{background:none;border:1px solid #e53e3e55;color:var(--red3);border-radius:8px;padding:8px 18px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:var(--font);display:flex;align-items:center;gap:7px;white-space:nowrap}
+.btn-logout-full:hover{background:var(--red-dim);border-color:var(--red);box-shadow:0 0 12px #e53e3e22}
+.btn-logout-full svg{width:14px;height:14px}
+
 /* MOBILE NAV */
 .mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;
   background:var(--surf);border-top:1px solid var(--border);
@@ -305,7 +316,94 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   .filter-row,.filter-row.triple,.server-cards{grid-template-columns:1fr}
   .oc-mid{grid-template-columns:1fr 1fr}
   #dash-tables{grid-template-columns:1fr!important}
+  .dash-row{grid-template-columns:1fr!important}
+  .dep-layout{grid-template-columns:1fr!important}
+  .hero-card{flex-direction:column;align-items:flex-start;gap:12px}
+  .hero-right{width:100%;display:flex;align-items:center;justify-content:space-between}
+  .hero-bal-val{font-size:1.2rem}
+  .qa-grid{gap:8px}
+  .qa-btn{padding:10px 4px 9px}
+  .qa-icon{width:38px;height:38px}
+  .qa-lbl{font-size:.65rem}
+  .qris-banner{flex-direction:column;gap:10px}
+  .qris-badges{flex-direction:row}
+  .stats-grid.stats-3{grid-template-columns:repeat(3,1fr)}
 }
+
+/* ═══════════════════════════════════════════
+   HERO CARD
+═══════════════════════════════════════════ */
+.hero-card{background:linear-gradient(135deg,#2d0f0f 0%,#1a0808 60%,#0e0505 100%);border:1px solid #e53e3e33;border-radius:16px;padding:20px 22px;margin-bottom:18px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:16px;box-shadow:0 8px 32px #e53e3e08}
+.hero-deco{position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,#e53e3e18 0%,transparent 70%);pointer-events:none}
+.hero-deco2{position:absolute;left:-20px;bottom:-40px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,#e53e3e0c 0%,transparent 70%);pointer-events:none}
+.hero-left{display:flex;align-items:center;gap:14px;flex:1;min-width:0}
+.hero-av{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;font-weight:800;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2.5px solid #e53e3e44;box-shadow:0 0 20px #e53e3e22}
+.hero-info{flex:1;min-width:0}
+.hero-greet{font-size:.95rem;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
+.hero-role{font-size:.67rem;font-weight:700;color:var(--red3);background:var(--red-dim2);border:1px solid #e53e3e33;border-radius:999px;padding:2px 10px;display:inline-block}
+.hero-right{flex-shrink:0;text-align:right}
+.hero-bal-lbl{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:3px}
+.hero-bal-val{font-size:1.45rem;font-weight:900;color:#fff;font-family:monospace;margin-bottom:9px;letter-spacing:-.01em}
+.hero-topup-btn{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:.75rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;box-shadow:var(--neon-sm);transition:all .15s;font-family:var(--font)}
+.hero-topup-btn:hover{box-shadow:var(--neon-red);transform:translateY(-1px)}
+.hero-topup-btn svg{width:12px;height:12px}
+
+/* ═══════════════════════════════════════════
+   QUICK ACTIONS
+═══════════════════════════════════════════ */
+.qa-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.qa-btn{display:flex;flex-direction:column;align-items:center;gap:9px;padding:16px 8px 13px;border-radius:13px;border:1px solid var(--border2);background:var(--card);cursor:pointer;transition:all .2s;font-family:var(--font);width:100%}
+.qa-btn:hover{transform:translateY(-3px);box-shadow:0 8px 24px #00000055}
+.qa-icon{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px #00000033}
+.qa-icon svg{width:21px;height:21px;color:#fff}
+.qa-lbl{font-size:.73rem;font-weight:700;color:var(--text);text-align:center;line-height:1.3}
+
+/* ═══════════════════════════════════════════
+   STATS 3-COL
+═══════════════════════════════════════════ */
+.stats-3{grid-template-columns:repeat(3,1fr)!important}
+
+/* ═══════════════════════════════════════════
+   DASH ROW (2-col recent activity)
+═══════════════════════════════════════════ */
+.dash-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.dash-order-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.dash-order-item:last-child{border-bottom:none;padding-bottom:0}
+.dash-order-item:first-child{padding-top:0}
+.doi-icon{width:33px;height:33px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.doi-icon svg{width:15px;height:15px;color:#fff}
+.doi-info{flex:1;min-width:0}
+.doi-svc{font-size:.8rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.doi-num{font-size:.69rem;color:var(--muted);font-family:monospace;margin-top:1px}
+.dep-dash-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.dep-dash-item:last-child{border-bottom:none;padding-bottom:0}
+.dep-dash-item:first-child{padding-top:0}
+.dep-dash-icon{width:33px;height:33px;border-radius:9px;background:var(--ok-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dep-dash-icon svg{width:14px;height:14px;color:var(--success-text)}
+.dep-dash-info{flex:1;min-width:0}
+.dep-dash-inv{font-size:.7rem;color:var(--muted);font-family:monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dep-dash-time{font-size:.67rem;color:var(--dim);margin-top:1px}
+.dep-dash-right{text-align:right;flex-shrink:0}
+.dep-dash-amt{font-size:.83rem;font-weight:800;color:var(--red3);font-family:monospace}
+
+/* ═══════════════════════════════════════════
+   QRIS DEPOSIT
+═══════════════════════════════════════════ */
+.dep-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.qris-banner{background:linear-gradient(135deg,#2d0f0f,#1a0808);border:1px solid #e53e3e33;border-radius:13px;padding:16px 18px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.qris-banner-left{display:flex;align-items:center;gap:14px;flex:1}
+.qris-icon-wrap{flex-shrink:0}
+.qris-banner-title{font-weight:800;font-size:.95rem;color:#fff;margin-bottom:3px}
+.qris-banner-sub{font-size:.68rem;color:var(--muted);line-height:1.55}
+.qris-badges{display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+.qris-badge{font-size:.65rem;font-weight:700;background:var(--red-dim);color:var(--red3);border:1px solid #e53e3e33;border-radius:999px;padding:3px 10px;white-space:nowrap;text-align:center}
+.dep-info-row{display:flex;justify-content:space-between;align-items:center;font-size:.75rem;color:var(--muted);padding:8px 0;border-top:1px solid var(--border);margin-top:6px}
+.dep-info-row span:last-child{font-weight:700;color:var(--text)}
+.dep-empty-state{text-align:center;padding:28px 16px}
+.dep-empty-icon{margin:0 auto 14px;color:var(--muted);opacity:.35;display:flex;justify-content:center}
+.dep-empty-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:6px}
+.dep-empty-sub{font-size:.75rem;color:var(--muted);line-height:1.55}
+.qris-pay-status{display:grid;gap:8px;margin-bottom:12px}
 </style>
 <link rel="stylesheet" href="/css/theme.css">
 <script src="/js/theme.js" defer></script>
@@ -352,7 +450,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
     <div class="user-pill">
       <div class="user-av" id="sb-av">?</div>
       <div class="user-info"><div class="user-name" id="sb-name">...</div><div class="user-bal" id="sb-bal">Rp 0</div></div>
-      <button class="btn-logout" onclick="doLogout()" title="Keluar">
+      <button class="btn-logout" onclick="doLogout()" title="Keluar" data-logout>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       </button>
     </div>
@@ -374,17 +472,55 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 
     <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
-      <div class="page-hd"><h1>Dashboard</h1><p id="dash-greet">Selamat datang!</p></div>
-      <div class="stats-grid">
-        <div class="sc sc-red"><div class="sc-bg"></div><div class="sc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="sc-lbl">Saldo Aktif</div><div class="sc-val" id="s-bal">—</div></div>
+
+      <!-- ── Hero Card ── -->
+      <div class="hero-card">
+        <div class="hero-deco"></div>
+        <div class="hero-deco2"></div>
+        <div class="hero-left">
+          <div class="hero-av" id="hero-av">?</div>
+          <div class="hero-info">
+            <div class="hero-greet" id="dash-greet">Selamat datang!</div>
+            <div class="hero-role" id="hero-role">Member Aktif</div>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="hero-bal-lbl">Saldo Tersedia</div>
+          <div class="hero-bal-val" id="s-bal">—</div>
+          <button class="hero-topup-btn" onclick="goPage('deposit')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Isi Saldo
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Quick Actions ── -->
+      <div class="qa-grid" id="qa-grid"></div>
+
+      <!-- ── Stats ── -->
+      <div class="stats-grid stats-3" style="margin-bottom:18px">
         <div class="sc sc-green"><div class="sc-bg"></div><div class="sc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div class="sc-lbl">Total Deposit</div><div class="sc-val" id="s-dep">—</div></div>
         <div class="sc sc-warn"><div class="sc-bg"></div><div class="sc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><div class="sc-lbl">Total Order</div><div class="sc-val" id="s-ord">—</div></div>
         <div class="sc sc-purple"><div class="sc-bg"></div><div class="sc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/></svg></div><div class="sc-lbl">Total Refund</div><div class="sc-val" id="s-ref">—</div></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="dash-tables">
-        <div class="scard"><div class="scard-head"><div class="scard-head-left"><div class="scard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/></svg></div><h3>Order Terbaru</h3></div></div><div class="scard-body" id="dash-orders"><div class="loading-box"><div class="spin"></div>Memuat...</div></div></div>
-        <div class="scard"><div class="scard-head"><div class="scard-head-left"><div class="scard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><h3>Deposit Terbaru</h3></div></div><div class="scard-body" id="dash-deps"><div class="loading-box"><div class="spin"></div>Memuat...</div></div></div>
+
+      <!-- ── Recent Activity ── -->
+      <div class="dash-row">
+        <div class="scard">
+          <div class="scard-head">
+            <div class="scard-head-left"><div class="scard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/></svg></div><h3>Order Terbaru</h3></div>
+            <button class="btn btn-sm btn-outline" onclick="goPage('history')">Lihat Semua</button>
+          </div>
+          <div class="scard-body" id="dash-orders"><div class="loading-box"><div class="spin"></div>Memuat...</div></div>
+        </div>
+        <div class="scard">
+          <div class="scard-head">
+            <div class="scard-head-left"><div class="scard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><h3>Deposit Terbaru</h3></div>
+            <button class="btn btn-sm btn-outline" onclick="goPage('history');setTimeout(()=>switchHistTab('deposits'),300)">Lihat Semua</button>
+          </div>
+          <div class="scard-body" id="dash-deps"><div class="loading-box"><div class="spin"></div>Memuat...</div></div>
+        </div>
       </div>
+
     </div>
 
     <!-- ORDER -->
@@ -430,23 +566,99 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 
     <!-- DEPOSIT -->
     <div class="page" id="page-deposit">
-      <div class="page-hd"><h1>Deposit Saldo</h1><p>Isi saldo untuk membeli nomor virtual</p></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="dep-layout">
-        <div class="scard">
-          <div class="scard-head"><div class="scard-head-left"><div class="scard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h3>Jumlah & Metode</h3></div></div>
-          <div class="scard-body">
-            <div class="fg"><label class="flbl">Pilih Nominal</label><div class="amt-chips" id="amt-chips"></div></div>
-            <div class="fg"><label class="flbl">Nominal Lain (IDR)</label><input type="number" class="finp" id="dep-custom" placeholder="contoh: 75000" min="5000" oninput="onCustomAmt(this.value)"/></div>
-            <div class="fg"><label class="flbl">Metode Pembayaran</label><select class="fsel" id="dep-method"><option value="qris">QRIS (Semua e-wallet)</option><option value="bri_va">BRI Virtual Account</option><option value="bni_va">BNI Virtual Account</option><option value="cimb_niaga_va">CIMB Niaga VA</option><option value="permata_va">Permata VA</option><option value="maybank_va">Maybank VA</option></select></div>
-            <button class="btn btn-red btn-block btn-lg" id="btn-do-deposit" onclick="doDeposit()">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/></svg>Bayar Sekarang
-</button>
+      <div class="page-hd"><h1>Deposit Saldo</h1><p>Isi saldo dengan pembayaran QRIS</p></div>
+      <div class="dep-layout">
+
+        <!-- Kolom Kiri: Form -->
+        <div>
+          <!-- Banner QRIS -->
+          <div class="qris-banner">
+            <div class="qris-banner-left">
+              <div class="qris-icon-wrap">
+                <!-- ikon QR code — bisa ganti SVG ini sesuai branding -->
+                <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" width="52" height="52">
+                  <rect width="52" height="52" rx="13" fill="#e53e3e" opacity="0.12"/>
+                  <rect x="9" y="9" width="14" height="14" rx="2.5" stroke="#e53e3e" stroke-width="2" fill="none"/>
+                  <rect x="12" y="12" width="8" height="8" rx="1" fill="#e53e3e"/>
+                  <rect x="29" y="9" width="14" height="14" rx="2.5" stroke="#e53e3e" stroke-width="2" fill="none"/>
+                  <rect x="32" y="12" width="8" height="8" rx="1" fill="#e53e3e"/>
+                  <rect x="9" y="29" width="14" height="14" rx="2.5" stroke="#e53e3e" stroke-width="2" fill="none"/>
+                  <rect x="12" y="32" width="8" height="8" rx="1" fill="#e53e3e"/>
+                  <rect x="29" y="29" width="5" height="5" rx="1" fill="#e53e3e"/>
+                  <rect x="37" y="29" width="5" height="5" rx="1" fill="#e53e3e"/>
+                  <rect x="29" y="37" width="5" height="5" rx="1" fill="#e53e3e"/>
+                  <rect x="37" y="37" width="5" height="5" rx="1" fill="#e53e3e"/>
+                  <rect x="33" y="33" width="1" height="1" rx="0.5" fill="#e53e3e"/>
+                </svg>
+              </div>
+              <div>
+                <!-- judul banner — bisa ubah teks ini di source code -->
+                <div class="qris-banner-title">Bayar via QRIS</div>
+                <!-- daftar e-wallet yang didukung — bisa ubah di source code -->
+                <div class="qris-banner-sub">GoPay · OVO · Dana · ShopeePay · LinkAja · m-Banking</div>
+              </div>
+            </div>
+            <div class="qris-badges">
+              <!-- label badge — bisa tambah/hapus di source code -->
+              <span class="qris-badge">⚡ Instan</span>
+              <span class="qris-badge">🔒 Aman</span>
+            </div>
+          </div>
+
+          <!-- Card Nominal -->
+          <div class="scard">
+            <div class="scard-head"><div class="scard-head-left"><div class="scard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h3>Pilih Nominal</h3></div></div>
+            <div class="scard-body">
+              <div class="fg">
+                <label class="flbl">Nominal Cepat</label>
+                <!-- chip nominal — dirender otomatis dari depOpts di JS -->
+                <div class="amt-chips" id="amt-chips"></div>
+              </div>
+              <div class="fg">
+                <label class="flbl">Nominal Lain (IDR)</label>
+                <input type="number" class="finp" id="dep-custom" placeholder="Contoh: 75000" min="5000" oninput="onCustomAmt(this.value)"/>
+              </div>
+              <!-- min deposit info — diupdate otomatis dari settings -->
+              <div class="dep-info-row">
+                <span>Min. deposit</span>
+                <span id="dep-min-info">Rp 10.000</span>
+              </div>
+              <!-- tombol bayar — id wajib ada untuk disable state -->
+              <button class="btn btn-red btn-block btn-lg" id="btn-do-deposit" onclick="doDeposit()" style="margin-top:14px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2z"/><path d="M18 14h3v3h-3z"/><path d="M14 18h2v3h-2z"/><path d="M18 19h3v2h-3z"/></svg>
+                Bayar dengan QRIS
+              </button>
+            </div>
           </div>
         </div>
+
+        <!-- Kolom Kanan: Status & QR -->
         <div class="scard">
           <div class="scard-head"><div class="scard-head-left"><div class="scard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><h3>Status Pembayaran</h3></div></div>
-          <div class="scard-body" id="dep-status-box"><div class="empty-box"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><p style="font-size:.82rem">Buat deposit terlebih dahulu</p></div></div>
+          <div class="scard-body" id="dep-status-box">
+            <!-- tampilan default sebelum deposit dibuat -->
+            <div class="dep-empty-state">
+              <div class="dep-empty-icon">
+                <svg viewBox="0 0 72 72" fill="none" width="72" height="72">
+                  <rect x="4" y="4" width="26" height="26" rx="4" stroke="currentColor" stroke-width="2"/>
+                  <rect x="10" y="10" width="14" height="14" rx="2" fill="currentColor" opacity="0.25"/>
+                  <rect x="42" y="4" width="26" height="26" rx="4" stroke="currentColor" stroke-width="2"/>
+                  <rect x="48" y="10" width="14" height="14" rx="2" fill="currentColor" opacity="0.25"/>
+                  <rect x="4" y="42" width="26" height="26" rx="4" stroke="currentColor" stroke-width="2"/>
+                  <rect x="10" y="48" width="14" height="14" rx="2" fill="currentColor" opacity="0.25"/>
+                  <rect x="42" y="42" width="10" height="10" rx="2" fill="currentColor" opacity="0.2"/>
+                  <rect x="58" y="42" width="10" height="10" rx="2" fill="currentColor" opacity="0.2"/>
+                  <rect x="42" y="58" width="10" height="10" rx="2" fill="currentColor" opacity="0.2"/>
+                  <rect x="58" y="58" width="10" height="10" rx="2" fill="currentColor" opacity="0.2"/>
+                  <rect x="50" y="50" width="2" height="2" fill="currentColor" opacity="0.15"/>
+                </svg>
+              </div>
+              <div class="dep-empty-title">QR Code muncul di sini</div>
+              <div class="dep-empty-sub">Pilih nominal dan tekan<br>"Bayar dengan QRIS" untuk mendapatkan kode QR pembayaran</div>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
 
@@ -494,6 +706,57 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 </div>
 
 <script>
+// ═══════════════════════════════════════════════════════════════
+// APP CONFIG — ubah bagian ini untuk kostumisasi tampilan
+// ═══════════════════════════════════════════════════════════════
+const APP_CONFIG = {
+  // Nama aplikasi (muncul di hero card & toast)
+  appName: 'ReceOTP',
+
+  // Quick action buttons di beranda — bisa tambah/hapus/urut ulang
+  quickActions: [
+    {
+      label: 'Beli OTP',
+      page: 'order',
+      bg: 'linear-gradient(135deg,#e53e3e,#c53030)',
+      shadow: '#e53e3e44',
+      // Ikon SVG path — ganti path ini untuk ikon berbeda
+      icon: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.5 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.41 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+    },
+    {
+      label: 'Top Up',
+      page: 'deposit',
+      bg: 'linear-gradient(135deg,#38a169,#276749)',
+      shadow: '#38a16944',
+      icon: '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+    },
+    {
+      label: 'Riwayat',
+      page: 'history',
+      bg: 'linear-gradient(135deg,#3182ce,#2c5282)',
+      shadow: '#3182ce44',
+      icon: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+    },
+    {
+      label: 'Profil',
+      page: 'profile',
+      bg: 'linear-gradient(135deg,#805ad5,#553c9a)',
+      shadow: '#805ad544',
+      icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+    },
+  ],
+
+  // Teks sapaan di hero card
+  greetingText: (username) => `Halo, ${username}! 👋`,
+
+  // Label role user
+  roleLabel: { admin: '⚡ Admin', user: '✓ Member Aktif' },
+
+  // Minimal deposit (sync dengan backend)
+  minDepositAmount: 10000,
+};
+// ═══════════════════════════════════════════════════════════════
+
 const fmtRp=n=>'Rp'+Number(n||0).toLocaleString('id-ID');
 const fmtDate=d=>d?new Date(d).toLocaleString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
 const $=id=>document.getElementById(id);
@@ -541,7 +804,12 @@ async function init(){
   try{
     const r=await api('GET','/api/auth/me');
     if(!r.success){window.location.replace('/login');return;}
-    USER=r.user;updateUserUI();loadDashboard();initDeposit();loadCatalogCountries();
+    USER=r.user;
+    renderQuickActions();
+    updateUserUI();
+    loadDashboard();
+    initDeposit();
+    loadCatalogCountries();
     if(USER.role==='admin'){const el=$('nav-back-admin');if(el)el.style.display='flex';}
   }catch(e){if(!e.message.includes('Unauthorized'))window.location.replace('/login');}
 }
@@ -549,10 +817,38 @@ function updateUserUI(){
   if(!USER)return;
   const init=USER.username.substring(0,2).toUpperCase();
   const bal=fmtRp(USER.balance);
+  // Sidebar
   $('sb-av').textContent=init;$('sb-name').textContent=USER.username;$('sb-bal').textContent=bal;
+  // Topbar
   $('tb-bal-txt').textContent=bal;$('tb-av').textContent=init;
+  // Hero card
+  const heroAv=$('hero-av');if(heroAv)heroAv.textContent=init;
+  const heroBal=$('s-bal');if(heroBal)heroBal.textContent=bal;
+  const heroGreet=$('dash-greet');if(heroGreet)heroGreet.textContent=APP_CONFIG.greetingText(USER.username);
+  const heroRole=$('hero-role');if(heroRole)heroRole.textContent=APP_CONFIG.roleLabel[USER.role]||'✓ Member Aktif';
 }
-async function doLogout(){await api('POST','/api/auth/logout');window.location.replace('/login')}
+function renderQuickActions(){
+  const qa=$('qa-grid');if(!qa)return;
+  qa.innerHTML=APP_CONFIG.quickActions.map(a=>`
+    <button class="qa-btn" onclick="goPage('${a.page}')">
+      <div class="qa-icon" style="background:${a.bg};box-shadow:0 4px 12px ${a.shadow||'#00000033'}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${a.icon}</svg>
+      </div>
+      <span class="qa-lbl">${a.label}</span>
+    </button>`).join('');
+}
+async function doLogout(){
+  if(!confirm('Yakin ingin keluar dari akun ini?'))return;
+  // Disable semua tombol logout agar tidak bisa diklik dua kali
+  document.querySelectorAll('[data-logout]').forEach(b=>{b.disabled=true;b._t=b.innerHTML;b.innerHTML='<div class="spin" style="width:13px;height:13px;margin:0 auto"></div>';});
+  try{
+    await api('POST','/api/auth/logout');
+    window.location.replace('/login');
+  }catch(e){
+    // Kalau API gagal, tetap redirect ke login (cookie akan expired sendiri)
+    window.location.replace('/login');
+  }
+}
 async function refreshBalance(){
   try{const r=await api('GET','/api/profile');if(r.success){USER.balance=r.profile.balance;updateUserUI();toast('Saldo diperbarui','success')}}catch(e){}
 }
@@ -578,13 +874,40 @@ async function loadDashboard(){
   try{
     const r=await api('GET','/api/dashboard');if(!r.success)return;
     const u=r.stats;USER.balance=u.balance;updateUserUI();
-    $('s-bal').textContent=fmtRp(u.balance);$('s-dep').textContent=fmtRp(u.total_deposit);
-    $('s-ord').textContent=fmtRp(u.total_order);$('s-ref').textContent=fmtRp(u.total_refund);
-    $('dash-greet').textContent=`Selamat datang, ${USER.username}!`;
+    $('s-dep').textContent=fmtRp(u.total_deposit);
+    $('s-ord').textContent=fmtRp(u.total_order);
+    $('s-ref').textContent=fmtRp(u.total_refund);
+
+    // Recent Orders — format kartu dengan ikon layanan
     const ords=r.recent_orders||[];
-    $('dash-orders').innerHTML=ords.length?`<div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Layanan</th><th>Nomor</th><th>Status</th></tr></thead><tbody>${ords.map(o=>`<tr><td>${o.service_name||'—'}</td><td class="mono">${o.phone_number||'—'}</td><td>${badge(o.status)}</td></tr>`).join('')}</tbody></table></div>`:`<div class="empty-box"><p style="font-size:.8rem">Belum ada order</p></div>`;
+    $('dash-orders').innerHTML=ords.length
+      ?ords.map(o=>`
+        <div class="dash-order-item">
+          <div class="doi-icon" style="${svcColor(o.service_name)}">${svcSvg(o.service_name)}</div>
+          <div class="doi-info">
+            <div class="doi-svc">${o.service_name||'—'}</div>
+            <div class="doi-num">${o.phone_number||'—'}</div>
+          </div>
+          ${badge(o.status)}
+        </div>`).join('')
+      :`<div class="empty-box"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/></svg><p style="font-size:.8rem">Belum ada order</p></div>`;
+
+    // Recent Deposits — format kartu
     const deps=r.recent_deposits||[];
-    $('dash-deps').innerHTML=deps.length?`<div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Invoice</th><th>Jumlah</th><th>Status</th></tr></thead><tbody>${deps.map(d=>`<tr><td class="mono" style="font-size:.7rem">${d.invoice}</td><td>${fmtRp(d.amount)}</td><td>${badge(d.status)}</td></tr>`).join('')}</tbody></table></div>`:`<div class="empty-box"><p style="font-size:.8rem">Belum ada deposit</p></div>`;
+    $('dash-deps').innerHTML=deps.length
+      ?deps.map(d=>`
+        <div class="dep-dash-item">
+          <div class="dep-dash-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+          <div class="dep-dash-info">
+            <div class="dep-dash-inv">${d.invoice}</div>
+            <div class="dep-dash-time">${fmtDate(d.created_at)}</div>
+          </div>
+          <div class="dep-dash-right">
+            <div class="dep-dash-amt">${fmtRp(d.amount)}</div>
+            ${badge(d.status)}
+          </div>
+        </div>`).join('')
+      :`<div class="empty-box"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><p style="font-size:.8rem">Belum ada deposit</p></div>`;
   }catch(e){toast('Gagal memuat dashboard','error')}
 }
 
@@ -703,7 +1026,8 @@ async function confirmOrder(){
     startPolling(r.order._id||r.order.id);
     goPage('history');
     setTimeout(()=>switchHistTab('orders'),300);
-  }catch(e){toast('Gagal membuat order. Coba lagi.','error');setLoad('btn-confirm-order',false);}
+  }catch(e){toast('Gagal membuat order. Coba lagi.','error');}
+  setLoad('btn-confirm-order',false);
 }
 
 // ── POLLING ──
@@ -715,7 +1039,7 @@ function startPolling(orderId){
     try{
       const r=await api('GET',`/api/order/${orderId}/status`);
       if(!r.success)return;
-      // Handle order yang sudah dihapus server (expired/deleted)
+      // Handle order yang sudah dihapus server (expired/auto-deleted)
       if(r.deleted){
         clearInterval(polls[orderId]);delete polls[orderId];
         if(r.refunded&&r.new_balance!==undefined){USER.balance=r.new_balance;updateUserUI();toast('Order expired, saldo dikembalikan','info')}
@@ -765,6 +1089,12 @@ function renderOrderHistory(ords){
 }
 function buildOrdCard(o){
   const oid=o._id||o.id;const hasOtp=o.otp_code&&o.status==='OTP_RECEIVED';
+  // Spinner "Menunggu OTP" hanya muncul saat status ACTIVE — bukan CANCELED/EXPIRED/FAILED
+  const otpContent=hasOtp
+    ?`<div class="oc-otp-code">${o.otp_code}</div>`
+    :o.status==='ACTIVE'
+      ?`<div class="oc-waiting"><div class="spin"></div>Menunggu OTP...</div>`
+      :`<div style="color:var(--dim);font-size:.8rem">—</div>`;
   return`<div class="ord-card" id="oc-${oid}">
     <div class="oc-top">
       <div class="oc-svc">
@@ -779,7 +1109,7 @@ function buildOrdCard(o){
       <div class="ocf"><label>Harga Beli</label><span style="font-family:monospace">${fmtRp(o.price)}</span></div>
     </div>
     <div class="oc-otp">
-      <div class="oc-otp-l"><label>Kode OTP</label>${hasOtp?`<div class="oc-otp-code">${o.otp_code}</div>`:o.status==='ACTIVE'?`<div class="oc-waiting"><div class="spin"></div>Menunggu OTP...</div>`:`<div style="color:var(--dim);font-size:.8rem">—</div>`}</div>
+      <div class="oc-otp-l"><label>Kode OTP</label>${otpContent}</div>
       ${hasOtp?`<button class="btn btn-sm btn-outline" onclick="copyText('${o.otp_code}','OTP')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Salin</button>`:''}
     </div>
     <div class="oc-actions">
@@ -787,27 +1117,26 @@ function buildOrdCard(o){
       ${o.status==='ACTIVE'?`<button class="btn btn-sm btn-danger" onclick="cancelOrder('${oid}',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>Batalkan</button>`:''}
       ${o.status==='ACTIVE'?`<button class="btn btn-sm btn-outline" onclick="resendOrder('${oid}','${o.provider_order_id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Kirim Ulang</button>`:''}
       ${hasOtp?`<button class="btn btn-sm btn-ok" onclick="finishOrder('${oid}',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polyline points="20 6 9 17 4 12"/></svg>Selesai</button>`:''}
-      ${hasOtp?`<button class="btn btn-sm btn-ok" onclick="finishOrder('${oid}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polyline points="20 6 9 17 4 12"/></svg>Selesai</button>`:''}
     </div>
   </div>`;
 }
 async function cancelOrder(ordId,el){
   if(!confirm('Batalkan order ini? Saldo akan dikembalikan.'))return;
-  if(el){el.disabled=true;el._t=el.innerHTML;el.innerHTML='<div class="spin"></div>';}
+  if(el){el.disabled=true;el._t=el.innerHTML;el.innerHTML='<div class="spin" style="width:13px;height:13px"></div>';}
   try{
     const r=await api('POST','/api/order/cancel',{order_id:ordId});
     if(r.success){toast('Order dibatalkan, saldo dikembalikan','success');if(r.new_balance!==undefined){USER.balance=r.new_balance;updateUserUI()}loadHistory()}
     else toast(r.error||'Gagal','error')
-  }catch(e){toast('Error','error')}
+  }catch(e){toast('Error membatalkan order','error')}
   finally{if(el){el.disabled=false;if(el._t)el.innerHTML=el._t;}}
 }
 async function finishOrder(ordId,el){
-  if(el){el.disabled=true;el._t=el.innerHTML;el.innerHTML='<div class="spin"></div>';}
+  if(el){el.disabled=true;el._t=el.innerHTML;el.innerHTML='<div class="spin" style="width:13px;height:13px"></div>';}
   try{
     const r=await api('POST','/api/order/finish',{order_id:ordId});
     if(r.success){toast('Order diselesaikan','success');loadHistory()}
     else toast(r.error||'Gagal','error')
-  }catch(e){toast('Error','error')}
+  }catch(e){toast('Error menyelesaikan order','error')}
   finally{if(el){el.disabled=false;if(el._t)el.innerHTML=el._t;}}
 }
 async function resendOrder(ordId,provId){
@@ -821,7 +1150,11 @@ function renderDepHistory(deps){
 // ── DEPOSIT ──
 let depOpts=[10000,25000,50000,100000,250000];
 function initDeposit(){
+  // Update label min deposit dari APP_CONFIG
+  const minEl=$('dep-min-info');
+  if(minEl)minEl.textContent=fmtRp(APP_CONFIG.minDepositAmount);
   renderAmtChips();
+  loadDepSettings();
 }
 async function loadDepSettings(){
   try{const r=await api('GET','/api/settings/public');if(r.success&&r.settings.deposit_options){depOpts=r.settings.deposit_options;renderAmtChips()}}catch(e){}
@@ -832,27 +1165,44 @@ function renderAmtChips(){
 function selectAmt(a){selAmt=a;$('dep-custom').value='';document.querySelectorAll('.amt-chip').forEach((c,i)=>c.classList.toggle('sel',depOpts[i]===a))}
 function onCustomAmt(v){selAmt=parseInt(v)||0;document.querySelectorAll('.amt-chip').forEach(c=>c.classList.remove('sel'))}
 async function doDeposit(){
-  if(!selAmt||selAmt<5000){toast('Minimal deposit Rp 5.000','warn');return}
+  if(!selAmt||selAmt<APP_CONFIG.minDepositAmount){
+    toast(`Minimal deposit ${fmtRp(APP_CONFIG.minDepositAmount)}`,'warn');return;
+  }
   setLoad('btn-do-deposit',true);
-  const method=$('dep-method').value;
   try{
-    const r=await api('POST','/api/deposit/create',{amount:selAmt,payment_method:method});
-    if(!r.success){toast(r.error||'Gagal membuat deposit','error');return}
-    toast('Deposit dibuat! Segera lakukan pembayaran.','success');
+    // Selalu QRIS — tidak ada pilihan bank lain
+    const r=await api('POST','/api/deposit/create',{amount:selAmt,payment_method:'qris'});
+    if(!r.success){toast(r.error||'Gagal membuat deposit','error');return;}
+    toast('Deposit dibuat! Scan QR untuk membayar.','success');
     const pay=r.payment;
-    const isQris=method==='qris';
     $('dep-status-box').innerHTML=`
-      <div class="pay-box" style="margin-bottom:10px"><div class="pay-box-label">Invoice</div><div class="pay-box-val" style="font-size:.82rem">${r.invoice}</div></div>
-      ${isQris?`<div class="pay-box" style="margin-bottom:10px;text-align:center"><div class="pay-box-label" style="margin-bottom:8px">Scan QRIS untuk Membayar</div><div id="qr-render" style="background:#fff;display:inline-block;padding:12px;border-radius:10px"></div><div style="margin-top:8px;font-size:.78rem;color:var(--muted)">Total bayar: <b style="color:var(--text)">${fmtRp(pay.total_payment||r.amount)}</b></div></div>`
-        :pay.payment_number?`<div class="pay-box" style="margin-bottom:10px"><div class="pay-box-label">Nomor Virtual Account</div><div class="pay-box-val">${pay.payment_number}</div><button class="btn btn-sm btn-outline" style="margin-top:8px" onclick="copyText('${pay.payment_number}','Nomor pembayaran')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Salin</button></div>`:''}
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
-        <button class="btn btn-sm btn-outline" onclick="checkDeposit('${r.invoice}',${r.amount})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Cek Status</button>
-        <button class="btn btn-sm btn-danger" onclick="cancelDeposit('${r.invoice}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>Batalkan</button>
-      </div>
-      <div style="font-size:.75rem;color:var(--muted);margin-top:10px" id="dep-poll-msg">⏳ Menunggu pembayaran... Auto-cek tiap 5 detik.</div>`;
-    if(isQris&&pay.payment_number&&window.QRCode){
+      <div>
+        <div style="text-align:center;margin-bottom:14px">
+          <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px">Scan QR untuk Membayar</div>
+          <div id="qr-render" style="background:#fff;display:inline-block;padding:14px;border-radius:12px;box-shadow:0 4px 20px #00000044"></div>
+        </div>
+        <div class="qris-pay-status">
+          <div class="pay-box"><div class="pay-box-label">Invoice</div><div class="pay-box-val" style="font-size:.8rem">${r.invoice}</div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="pay-box"><div class="pay-box-label">Nominal</div><div style="font-weight:800;color:var(--red3);font-family:monospace">${fmtRp(r.amount)}</div></div>
+            <div class="pay-box"><div class="pay-box-label">Total Bayar</div><div style="font-weight:800;color:var(--text);font-family:monospace">${fmtRp(pay.total_payment||r.amount)}</div></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0 8px">
+          <button class="btn btn-sm btn-outline" onclick="checkDeposit('${r.invoice}',${r.amount})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Cek Status
+          </button>
+          <button class="btn btn-sm btn-danger" onclick="cancelDeposit('${r.invoice}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>Batalkan
+          </button>
+        </div>
+        <div style="font-size:.73rem;color:var(--muted);text-align:center" id="dep-poll-msg">⏳ Auto-cek tiap 5 detik...</div>
+      </div>`;
+    if(pay.payment_number&&window.QRCode){
       try{new QRCode($('qr-render'),{text:pay.payment_number,width:200,height:200,correctLevel:QRCode.CorrectLevel.M});}
-      catch(e){$('qr-render').textContent='Gagal membuat QR. Klik Cek Status atau hubungi admin.';}
+      catch(e){$('qr-render').innerHTML='<p style="padding:8px;font-size:.75rem;color:#333">Gagal render QR.<br>Klik Cek Status.</p>';}
+    }else if($('qr-render')){
+      $('qr-render').innerHTML='<p style="padding:8px;font-size:.75rem;color:#333">QR tidak tersedia.<br>Gunakan Cek Status.</p>';
     }
     CURRENT_DEPOSIT_INVOICE=r.invoice;
     pollDeposit(r.invoice,r.amount);
@@ -885,9 +1235,27 @@ async function cancelDeposit(invoice){
     if(r.success){
       toast('Deposit dibatalkan','success');
       stopDepositPoll();
-      $('dep-status-box').innerHTML=`<div class="empty-box"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><p style="font-size:.82rem">Deposit dibatalkan. Buat deposit baru di sebelah kiri.</p></div>`;
+      $('dep-status-box').innerHTML=`
+        <div class="dep-empty-state">
+          <div class="dep-empty-icon">
+            <svg viewBox="0 0 72 72" fill="none" width="72" height="72">
+              <rect x="4" y="4" width="26" height="26" rx="4" stroke="currentColor" stroke-width="2"/>
+              <rect x="10" y="10" width="14" height="14" rx="2" fill="currentColor" opacity="0.25"/>
+              <rect x="42" y="4" width="26" height="26" rx="4" stroke="currentColor" stroke-width="2"/>
+              <rect x="48" y="10" width="14" height="14" rx="2" fill="currentColor" opacity="0.25"/>
+              <rect x="4" y="42" width="26" height="26" rx="4" stroke="currentColor" stroke-width="2"/>
+              <rect x="10" y="48" width="14" height="14" rx="2" fill="currentColor" opacity="0.25"/>
+              <rect x="42" y="42" width="10" height="10" rx="2" fill="currentColor" opacity="0.2"/>
+              <rect x="58" y="42" width="10" height="10" rx="2" fill="currentColor" opacity="0.2"/>
+              <rect x="42" y="58" width="10" height="10" rx="2" fill="currentColor" opacity="0.2"/>
+              <rect x="58" y="58" width="10" height="10" rx="2" fill="currentColor" opacity="0.2"/>
+            </svg>
+          </div>
+          <div class="dep-empty-title">Deposit dibatalkan</div>
+          <div class="dep-empty-sub">Buat deposit baru dengan memilih nominal di sebelah kiri</div>
+        </div>`;
       loadHistory();
-    } else toast(r.error||'Gagal','error')
+    }else toast(r.error||'Gagal','error')
   }catch(e){toast('Error','error')}
 }
 
@@ -907,12 +1275,26 @@ async function loadProfile(){
     </div>
     <div class="scard"><div class="scard-head"><div class="scard-head-left"><div class="scard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><h3>Detail Akun</h3></div></div><div class="scard-body" style="display:grid;gap:8px">
       ${[['Username',u.username],['Email',u.email],['Role',u.role],['Status',u.status]].map(([l,v])=>`<div style="display:flex;justify-content:space-between;padding:9px 10px;background:var(--surf2);border-radius:7px;border:1px solid var(--border)"><span style="font-size:.8rem;color:var(--muted);font-weight:600">${l}</span><span style="font-size:.8rem;font-weight:700;color:var(--text)">${v}</span></div>`).join('')}
-    </div></div>`;
+    </div></div>
+    <div class="logout-card">
+      <div class="logout-card-info">
+        <div class="logout-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </div>
+        <div>
+          <div class="logout-card-title">Keluar dari Akun</div>
+          <div class="logout-card-sub">Sesi kamu akan dihapus dan kamu akan diarahkan ke halaman login</div>
+        </div>
+      </div>
+      <button class="btn-logout-full" onclick="doLogout()" data-logout>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Keluar
+      </button>
+    </div>`;
   }catch(e){$('profile-content').innerHTML=`<div class="empty-box"><p>Gagal memuat profil</p></div>`}
 }
 
 document.addEventListener('DOMContentLoaded',init);
-loadDepSettings();
 </script>
 </body>
 </html>
