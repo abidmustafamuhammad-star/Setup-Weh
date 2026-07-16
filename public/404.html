@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<title>404 — Halaman Tidak Ditemukan | ReceOTP</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0a;--card:#111;--border:#1e1e1e;--border2:#2a2a2a;
+  --red:#e53e3e;--red2:#c53030;--red3:#feb2b2;--red-dim:#3d1515;
+  --text:#f0f0f0;--muted:#888;--dim:#555;
+  --neon-red:0 0 8px #e53e3e,0 0 20px #e53e3e44;
+  --neon-glow:0 0 4px #e53e3e88;
+  --font:'Segoe UI',system-ui,sans-serif;
+  --r:10px;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font);overflow:hidden}
+body{display:flex;align-items:center;justify-content:center;min-height:100vh;position:relative;padding:16px}
+
+.bg-grid{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(#1a00004d 1px,transparent 1px),linear-gradient(90deg,#1a00004d 1px,transparent 1px);
+  background-size:40px 40px;animation:gridMove 20s linear infinite}
+@keyframes gridMove{0%{background-position:0 0}100%{background-position:40px 40px}}
+.bg-glow{position:fixed;top:-30%;left:-20%;width:60%;height:60%;border-radius:50%;
+  background:radial-gradient(circle,#e53e3e0d 0%,transparent 70%);pointer-events:none;z-index:0}
+.bg-glow2{position:fixed;bottom:-30%;right:-20%;width:50%;height:50%;border-radius:50%;
+  background:radial-gradient(circle,#7b000022 0%,transparent 70%);pointer-events:none;z-index:0}
+
+.wrap{position:relative;z-index:1;width:100%;max-width:440px;text-align:center}
+.code-wrap{position:relative;margin-bottom:8px}
+.code{font-size:6.5rem;font-weight:900;letter-spacing:-.03em;line-height:1;
+  background:linear-gradient(135deg,var(--red),var(--red2));-webkit-background-clip:text;
+  background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 24px #e53e3e33)}
+.icon-badge{width:60px;height:60px;border-radius:16px;margin:6px auto 18px;
+  background:linear-gradient(135deg,#e53e3e,#7b0000);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--neon-red)}
+.icon-badge svg{width:28px;height:28px;color:#fff}
+
+.card{background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:28px 26px;
+  box-shadow:0 24px 60px #00000088,inset 0 1px 0 #ffffff08}
+.card h1{font-size:1.15rem;font-weight:800;color:var(--text);margin-bottom:8px;letter-spacing:-.01em}
+.card p{font-size:.85rem;color:var(--muted);line-height:1.6;margin-bottom:22px}
+.card p code{background:var(--bg);border:1px solid var(--border2);border-radius:5px;padding:1px 6px;color:var(--red3);font-size:.8rem}
+
+.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 18px;border-radius:8px;
+  font-size:.85rem;font-weight:700;cursor:pointer;text-decoration:none;font-family:var(--font);
+  transition:all .2s;border:none}
+.btn svg{width:14px;height:14px}
+.btn-red{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;box-shadow:var(--neon-glow)}
+.btn-red:hover{box-shadow:var(--neon-red);transform:translateY(-1px)}
+.btn-outline{background:var(--surf2,#0d0d0d);color:var(--text);border:1px solid var(--border2)}
+.btn-outline:hover{border-color:var(--red);color:var(--red3)}
+
+@media(max-width:480px){
+  .code{font-size:4.8rem}
+  .card{padding:22px 18px}
+}
+</style>
+<link rel="stylesheet" href="/css/theme.css">
+<script src="/js/theme.js" defer></script>
+</head>
+<body>
+<button class="theme-toggle floating" onclick="toggleTheme()" title="Ganti tema" aria-label="Ganti tema terang/gelap" style="position:fixed;top:16px;right:16px;z-index:5">
+  <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow2"></div>
+
+<div class="wrap">
+  <div class="code-wrap"><div class="code">404</div></div>
+  <div class="icon-badge">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+  </div>
+  <div class="card">
+    <h1>Halaman Tidak Ditemukan</h1>
+    <p id="p-desc">Sepertinya nomor yang kamu cari sudah kadaluarsa 👀<br>Halaman <code id="p-path">ini</code> tidak tersedia di ReceOTP.</p>
+    <div class="actions">
+      <a class="btn btn-red" href="/dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Ke Dashboard
+      </a>
+      <a class="btn btn-outline" href="/login">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/></svg>
+        Ke Login
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+// Tampilkan path yang salah diketik user, di-escape supaya aman dari XSS
+// (path bisa berisi karakter apa saja dari URL yang diminta pengunjung).
+(function(){
+  try{
+    var p = window.location.pathname;
+    var el = document.getElementById('p-path');
+    if (el && p && p !== '/') el.textContent = p;
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
